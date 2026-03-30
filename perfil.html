@@ -351,18 +351,18 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import {
       getAuth, onAuthStateChanged, signOut,
-      updateEmail, sendEmailVerification, sendPasswordResetEmail
+      verifyBeforeUpdateEmail, sendPasswordResetEmail
     } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     // ── CONFIG FIREBASE ──
     const firebaseConfig = {
-      apiKey: "AIzaSyCoJKxnRD4MP9-ycs-zcSggIWM-ykx7w6E",
-      authDomain: "pe-na-areia-d250c.firebaseapp.com",
-      projectId: "pe-na-areia-d250c",
-      storageBucket: "pe-na-areia-d250c.firebasestorage.app",
-      messagingSenderId: "505803392266",
-      appId: "1:505803392266:web:f031382a3353cb748526f3"
+      apiKey: "SUA_API_KEY",
+      authDomain: "SEU_PROJETO.firebaseapp.com",
+      projectId: "SEU_PROJETO",
+      storageBucket: "SEU_PROJETO.appspot.com",
+      messagingSenderId: "SEU_SENDER_ID",
+      appId: "SEU_APP_ID"
     };
 
     const app  = initializeApp(firebaseConfig);
@@ -451,7 +451,7 @@
 
       setFieldLoading('save-celular', true);
       try {
-        await updateDoc(doc(db, 'usuarios', currentUser.uid), { celular: cel });
+        await setDoc(doc(db, 'usuarios', currentUser.uid), { celular: cel }, { merge: true });
         userData.celular = cel;
         document.getElementById('val-celular').textContent = cel;
         cancelField('celular');
@@ -471,18 +471,19 @@
 
       setFieldLoading('save-email', true);
       try {
-        await updateEmail(currentUser, email);
-        await sendEmailVerification(currentUser);
-        await updateDoc(doc(db, 'usuarios', currentUser.uid), { email });
+        // verifyBeforeUpdateEmail manda confirmação pro novo email antes de trocar
+        await verifyBeforeUpdateEmail(currentUser, email);
+        // Já salva no Firestore — vai valer quando o usuário confirmar
+        await updateDoc(doc(db, 'usuarios', currentUser.uid), { emailPendente: email });
         document.getElementById('alert-email').classList.add('show');
         cancelField('email');
-        document.getElementById('val-email').textContent = email;
-        document.getElementById('av-email').textContent  = email;
       } catch(e) {
         if (e.code === 'auth/requires-recent-login') {
           showToast('Faça login novamente para alterar o email.', 'error');
+        } else if (e.code === 'auth/email-already-in-use') {
+          showToast('Esse email já está em uso.', 'error');
         } else {
-          showToast('Erro ao atualizar email.', 'error');
+          showToast('Erro ao atualizar email. Tente novamente.', 'error');
         }
       } finally {
         setFieldLoading('save-email', false);
