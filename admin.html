@@ -819,7 +819,11 @@
       const wrap      = document.getElementById('quadras-wrap');
       wrap.innerHTML  = '';
       const isDomingo = new Date(iso + 'T12:00:00').getDay() === 0;
-      const slots     = isDomingo ? [15,16,17,18,19,20,21,22,23] : [17,18,19,20,21,22,23];
+      const slots     = isDomingo ? [15,16,17,18,19,20,21,22] : [17,18,19,20,21,22];
+
+      const agora     = new Date();
+      const isHoje    = iso === toISO(agora);
+      const horaAtual = agora.getHours();
 
       [1,2,3].forEach(q => {
         const col = document.createElement('div');
@@ -834,19 +838,26 @@
 
         const list = document.getElementById(`slots-q${q}`);
         slots.forEach(h => {
-          const ag = agendamentos.find(a => a.quadra === q && a.horarios.includes(h));
-          const slot = document.createElement('div');
-          slot.className = `slot ${ag ? 'ocupado' : 'livre'}`;
+          const ag       = agendamentos.find(a => a.quadra === q && a.horarios.includes(h));
+          const jáPassou = isHoje && h <= horaAtual && !ag;
+          const slot     = document.createElement('div');
+
+          slot.className = ag ? 'slot ocupado' : jáPassou ? 'slot livre passado' : 'slot livre';
+          slot.style.opacity = jáPassou ? '0.4' : '1';
+          slot.style.cursor  = jáPassou ? 'not-allowed' : 'pointer';
+
           slot.innerHTML = `
             <span class="slot-hora">${h}h</span>
             <div class="slot-right">
-              ${ag ? `<span class="slot-nome">${ag.nome}</span>` : ''}
-              <div class="slot-dot"></div>
+              ${ag ? `<span class="slot-nome">${ag.nome}</span>` : jáPassou ? `<span class="slot-nome" style="font-size:11px;">passado</span>` : ''}
+              <div class="slot-dot" style="${jáPassou ? 'background:var(--text-muted)' : ''}"></div>
             </div>`;
 
-          slot.onclick = () => ag
-            ? abrirVer(ag)
-            : abrirAgendar(q, h, iso);
+          if (!jáPassou) {
+            slot.onclick = () => ag
+              ? abrirVer(ag)
+              : abrirAgendar(q, h, iso);
+          }
 
           list.appendChild(slot);
         });
