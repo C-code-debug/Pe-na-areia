@@ -1,0 +1,87 @@
+{
+  "name": "Pé na Areia",
+  "short_name": "Pé na Areia",
+  "description": "Reserve sua quadra de vôlei, beach tennis e futevôlei em Goianésia do Pará",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0A4A61",
+  "theme_color": "#126E8C",
+  "orientation": "portrait-primary",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icons/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Tela inicial do Pé na Areia"
+    }
+  ],
+  "categories": ["sports", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Nova reserva",
+      "short_name": "Reservar",
+      "description": "Fazer um novo agendamento",
+      "url": "/agendamento.html",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Meus agendamentos",
+      "short_name": "Agendamentos",
+      "description": "Ver minhas reservas",
+      "url": "/meus-agendamentos.html",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Configurações · Pé na Areia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet"/>
+      <!-- PWA -->
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#126E8C"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Pé na Areia"/>
+  <link rel="apple-touch-icon" href="icons/icon-192.png"/>
+  <!--Style-->
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --sky:#C9E8F5;--ocean:#219EBC;--ocean-dark:#126E8C;--ocean-deeper:#0A4A61;
+      --sand:#FFD166;--sand-dark:#E8A820;--sand-light:#FFF3C4;
+      --white:#FAFCFF;--dark:#0D1B2A;--muted:#4A6274;
+      --danger:#E63946;--success:#06D6A0;
+    }
+    body{font-family:'DM Sans',sans-serif;background:var(--sky);color:var(--dark);min-height:100vh}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:rgba(10,74,97,0.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.08)}
+    .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:white;text-decoration:none;display:flex;align-items:center;gap:10px}
+    .nav-logo .logo-icon{width:32px;height:32px;background:var(--sand);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px rgba(232,168,32,0.5)}
+    .back-btn{color:rgba(255,255,255,0.7);font-size:13px;text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+    .back-btn:hover{color:white}
+
+    main{max-width:620px;margin:0 auto;padding:104px 24px 80px}
+    .page-title{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:2px;color:var(--ocean-dark);line-height:1;margin-bottom:6px}
+    .page-subtitle{font-size:14px;color:var(--muted);font-weight:300;margin-bottom:28px}
+
+    /* CARDS */
+    .card{background:white;border-radius:20px;padding:24px 26px;margin-bottom:16px;border:1.5px solid rgba(142,202,230,0.2)}
+    .card-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;color:var(--ocean-dark);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+
+    /* TOGGLE ROW */
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(142,202,230,0.12)}
+    .toggle-row:last-child{border-bottom:none;padding-bottom:0}
+    .toggle-info{flex:1;padding-right:16px}
+    .toggle-label{font-size:15px;font-weight:500;color:var(--dark)}
+    .toggle-desc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
+    .soon-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:var(--sand-light);color:var(--sand-dark);padding:2px 8px;border-radius:20px;margin-left:8px;vertical-align:middle}
+
+    /* TOGGLE SWITCH */
+    .toggle-switch{position:relative;width:46px;height:26px;flex-shrink:0}
+    .toggle-switch input{opacity:0;width:0;height:0;position:absolute}
+    .toggle-track{position:absolute;inset:0;border-radius:13px;background:rgba(142,202,230,0.3);transition:background .25s;cursor:pointer}
+    .toggle-track::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:white;top:3px;left:3px;transition:transform .25s;box-shadow:0 1px 4px rgba(0,0,0,0.18)}
+    .toggle-switch input:checked + .toggle-track{background:var(--ocean)}
+    .toggle-switch input:checked + .toggle-track::after{transform:translateX(20px)}
+    .toggle-switch.disabled .toggle-track{cursor:not-allowed;opacity:0.5}
+
+    /* CONTATO */
+    .contato-item{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid rgba(142,202,230,0.12)}
+    .contato-item:last-child{border-bottom:none;padding-bottom:0}
+    .contato-icon{width:44px;height:44px;border-radius:14px;background:rgba(37,211,102,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .contato-info{flex:1}
+    .contato-nome{font-size:14px;font-weight:500;color:var(--dark)}
+    .contato-num{font-size:13px;color:var(--muted);margin-top:2px}
+    .btn-wpp{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:#25D366;color:white;border-radius:40px;font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;border:none;cursor:pointer}
+    .btn-wpp:hover{background:#1ebe58;transform:translateY(-1px)}
+
+    /* FAQ */
+    .faq-item{border-bottom:1px solid rgba(142,202,230,0.12)}
+    .faq-item:last-child{border-bottom:none}
+    .faq-question{display:flex;align-items:center;justify-content:space-between;padding:16px 0;cursor:pointer;gap:12px;user-select:none}
+    .faq-q-text{font-size:14px;font-weight:500;color:var(--dark);line-height:1.5}
+    .faq-chevron{color:var(--muted);transition:transform .25s;flex-shrink:0}
+    .faq-item.open .faq-chevron{transform:rotate(180deg)}
+    .faq-answer{display:none;padding:0 0 16px;font-size:13px;color:var(--muted);line-height:1.7}
+    .faq-item.open .faq-answer{display:block;animation:fadeIn .2s ease}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+    /* VERSÃO */
+    .version-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
+    .version-label{font-size:14px;color:var(--muted)}
+    .version-val{font-size:13px;color:var(--muted);font-weight:500}
+
+    @media(max-width:600px){nav{padding:14px 18px}main{padding:88px 16px 60px}}
+  </style>
+</head>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('SW registrado:', reg.scope))
+        .catch(err => console.warn('SW falhou:', err));
+    });
+  }
+</script>
+<body>
+  <nav>
+    <a class="nav-logo" href="agendamento.html"><span class="logo-icon">🏐</span> Pé na Areia</a>
+    <a class="back-btn" href="perfil.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Voltar
+    </a>
+  </nav>
+
+  <main>
+    <h1 class="page-title">Configurações</h1>
+    <p class="page-subtitle">Personalize sua experiência no Pé na Areia</p>
+
+    <!-- NOTIFICAÇÕES -->
+    <div class="card">
+      <div class="card-title"><span>🔔</span> Notificações</div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Lembrete de reserva <span class="soon-badge">Em breve</span></div>
+          <div class="toggle-desc">Receba uma notificação 1 hora antes da sua reserva</div>
+        </div>
+        <label class="toggle-switch disabled">
+          <input type="checkbox" disabled/>
+          <div class="toggle-track"></div>
+        </label>
+      </div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Confirmação de agendamento <span class="soon-badge">Em breve</span></div>
+          <div class="toggle-desc">Notificação ao confirmar ou cancelar uma reserva</div>
+        </div>
+        <label class="toggle-switch disabled">
+          <input type="checkbox" disabled/>
+          <div class="toggle-track"></div>
+        </label>
+      </div>
+    </div>
+
+    <!-- APARÊNCIA -->
+    <div class="card">
+      <div class="card-title"><span>🎨</span> Aparência</div>
+
+      <div class="toggle-row">
+        <div class="toggle-info">
+          <div class="toggle-label">Tema escuro <span class="soon-badge">Em breve</span></div>
+          <div class="toggle-desc">Alterna entre o tema claro e o tema escuro do app</div>
+        </div>
+        <label class="toggle-switch disabled">
+          <input type="checkbox" disabled/>
+          <div class="toggle-track"></div>
+        </label>
+      </div>
+    </div>
+
+    <!-- CONTATO -->
+    <div class="card">
+      <div class="card-title"><span>📞</span> Fale com a gente</div>
+
+      <div class="contato-item">
+        <div class="contato-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        </div>
+        <div class="contato-info">
+          <div class="contato-nome">Suporte – Simone|Contato Comercial</div>
+          <div class="contato-num">(63) 98511-9407</div>
+        </div>
+        <a class="btn-wpp" href="https://wa.me/5563985119407" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Chamar
+        </a>
+      </div>
+
+      <div class="contato-item">
+        <div class="contato-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        </div>
+        <div class="contato-info">
+          <div class="contato-nome">Suporte – Carlos Eduardo|Técnico</div>
+          <div class="contato-num">(94) 99184-8466</div>
+        </div>
+        <a class="btn-wpp" href="https://wa.me/5594991848466" target="_blank" rel="noopener">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Chamar
+        </a>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="card">
+      <div class="card-title"><span>❓</span> Dúvidas frequentes</div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span class="faq-q-text">Como faço para reservar uma quadra?</span>
+          <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">Após fazer login, acesse a tela de Agendamento. Escolha o dia no calendário, a quadra, os horários disponíveis, a modalidade e o número de pessoas. Depois confirme o agendamento. Ele aparecerá na sua lista de reservas.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span class="faq-q-text">Posso reservar mais de um horário seguido?</span>
+          <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">Sim! Na tela de agendamento, você pode selecionar múltiplos horários de uma vez para a mesma quadra e dia. O valor total será calculado automaticamente.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span class="faq-q-text">Como cancelo um agendamento?</span>
+          <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">Acesse "Meus Agendamentos", encontre a reserva que deseja cancelar e toque em "Cancelar". Reservas passadas não podem ser canceladas. Em caso de dúvida, entre em contato pelo WhatsApp.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span class="faq-q-text">Quais são os horários de funcionamento?</span>
+          <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">De segunda a sábado das 17h às 23h, e aos domingos das 15h às 21h. Cada slot é de 1 hora — o último slot disponível de seg–sáb começa às 22h, e no domingo às 20h.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span class="faq-q-text">O horário que quero está ocupado. O que faço?</span>
+          <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">Horários ocupados ficam bloqueados na tela de agendamento. Você pode tentar outro horário, outra quadra no mesmo dia, ou escolher uma data diferente. Se precisar de ajuda, fale com a gente pelo WhatsApp.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span class="faq-q-text">Como funciona a divisão do valor?</span>
+          <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">No agendamento você informa quantas pessoas vão jogar e quantas vão pagar. O sistema divide o valor total automaticamente e mostra quanto cada pagante deve. Isso é só uma referência — o pagamento em si é combinado com o pessoal do Pé na Areia.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span class="faq-q-text">Preciso confirmar o agendamento pessoalmente?</span>
+          <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">Não. O agendamento feito pelo app já é suficiente para garantir o seu horário. Mas se preferir, você pode confirmar pelo WhatsApp com a equipe do Pé na Areia.</div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span class="faq-q-text">Esqueci minha senha. Como recupero?</span>
+          <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">Na tela de login, toque em "Esqueci a senha" e informe seu email. Você receberá um link para criar uma nova senha. Se não encontrar o email, verifique a pasta de spam.</div>
+      </div>
+    </div>
+
+    <!-- SOBRE -->
+    <div class="card">
+      <div class="card-title"><span>ℹ️</span> Sobre o app</div>
+      <div class="version-row">
+        <span class="version-label">Versão</span>
+        <span class="version-val">1.0.0</span>
+      </div>
+      <div class="version-row">
+        <span class="version-label">Desenvolvido por</span>
+        <span class="version-val">Carlos Eduardo</span>
+      </div>
+      <div class="version-row" style="border-bottom:none">
+        <span class="version-label">Pé na Areia · Goianésia do Pará</span>
+        <span class="version-val">© 2025</span>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    function toggleFaq(item) {
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    }
+  </script>
+</body>
+</html>
